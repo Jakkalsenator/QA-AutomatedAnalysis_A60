@@ -5,6 +5,7 @@
 ###     Silica 180, 240, 300, 590, 880 and 1300nm, Non-fluorescent
 ###
 ### Author: Jaco Botha
+### Created: 11-12-2016
 ### Last modified: 11-12-2016
 ###
 #################################################################################
@@ -14,9 +15,14 @@ library(flowCore)
 library(flowViz)
 library(flowQ)
 library(flowDensity)
+library(ggplot2)
+
+## Sets the seed for random number generation.
+set.seed(123456)
 
 ## Sources support scripts
 source("C:/Users/kfp4/Desktop/FlowCytometry/Scripts/SupportFunctions.R")
+source("./Scripts/densplotSettings.R")
 
 ## Generates file list for QA analysis
 fileList<-list.files("../Data/QA_ApogeeMix/",full.names=T)
@@ -38,11 +44,11 @@ BOrg<-'488-Org(Peak)'
 BRed<-'488-Red(Peak)'
 Time<-'TIME'
 
-## Creates a global folw cytometry frame from 10 random files in the flow set
+## Creates a global flow cytometry frame from 10 random files in the flow set
 ## with twice as many data points as any of the flow sets.
 globalFrame<-getGlobalFrame(fs,10,2)
 
-## Log10 transformation of axes
+## Log10 transformation of axes for colour density calculations.
 logTrans<-logTransform(transformationId="log10-transformation",logbase=10,r=1,d=1)
 trans<-transformList(colnames(globalFrame@exprs)[1:11],logTrans)
 transGlobalFrame<-transform(globalFrame,trans)
